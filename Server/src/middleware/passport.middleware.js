@@ -2,6 +2,7 @@
 import db from "../database/queries.js"
 import passport from "passport";
 import {Strategy as LocalStrategy} from "passport-local";
+import bcrypt from "bcrypt";
 
 passport.use(
     new LocalStrategy(
@@ -13,7 +14,8 @@ passport.use(
             {
                 return done(null, false, {message:"User not found"});
             }
-            if(user.password!==password)
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if(!isPasswordValid)
             {
                 return done(null, false, {message:"Incorrect Password"});
             }
