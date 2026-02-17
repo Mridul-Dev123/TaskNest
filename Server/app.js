@@ -4,7 +4,7 @@ import userRouter from "./src/routes/user.routes.js";
 import taskRouter from "./src/routes/task.routes.js";
 import express from "express"
 import cors from "cors";
-import {ApiError} from "./src/utils/index.js";
+import { ApiError } from "./src/utils/index.js";
 
 
 import connectPgSimple from "connect-pg-simple";
@@ -27,6 +27,8 @@ const pool = new Pool({
 
 const app = express();
 
+// Trust Railway's reverse proxy — required for secure cookies behind a proxy
+app.set("trust proxy", 1);
 
 app.use(cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
@@ -49,7 +51,7 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            sameSite: "lax",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             secure: process.env.NODE_ENV === "production",
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000

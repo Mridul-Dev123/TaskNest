@@ -17,11 +17,13 @@ const apiClient = async (endpoint, options = {}) => {
 
         try {
             data = await res.json();
-        } catch {
+        } catch (err){
+            console.log(`${API_BASE_URL}${endpoint} error  :: `, err)
             throw new Error("Invalid JSON from server");
         }
+        console.log(`${API_BASE_URL}${endpoint} returns  :: `, data)
 
-        // 🔥 fetch DOES NOT throw for 400/500
+        // fetch DOES NOT throw for 400/500
         if (!res.ok) {
             throw data;
         }
