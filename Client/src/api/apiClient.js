@@ -14,7 +14,7 @@ const apiClient = async (endpoint, options = {}) => {
         const res = await fetch(`${API_BASE_URL}${endpoint}`, config);
 
         let data;
-
+         console.log(`\n\n${API_BASE_URL}${endpoint}  res  :: `, res)
         try {
             data = await res.json();
         } catch (err){
